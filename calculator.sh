@@ -60,9 +60,12 @@ do
             RESULT+=("${TEMP[-1]}")
             unset TEMP[-1]
             unset TEMP[-1]
-          elif [[ ${PRIORITY["${FORMATTED_EXPRESSION[$i]}"]} -gt ${PRIORITY["${TEMP[-1]}"]} ]]
+          elif [[ ${PRIORITY["${FORMATTED_EXPRESSION[$i]}"]} -gt ${PRIORITY["${TEMP[-1]}"]} ]] && [[ ! "${FORMATTED_EXPRESSION[$i+1]}" == "(" ]]
           then
             RESULT+=("${FORMATTED_EXPRESSION[$i]}")
+          elif [[ ${PRIORITY["${FORMATTED_EXPRESSION[$i]}"]} -gt ${PRIORITY["${TEMP[-1]}"]} ]] && [[ "${FORMATTED_EXPRESSION[$i+1]}" == "(" ]]
+          then
+            TEMP+=("${FORMATTED_EXPRESSION[$i]}")
           else
             RESULT+=("${TEMP[-1]}")
             l=${#TEMP[@]}
@@ -82,8 +85,19 @@ do
 done
 
 # Put the content of array into result stack
-RESULT+=("${TEMP[-1]}")
+declare -p RESULT
+declare -p TEMP
 
+l=${#TEMP[*]}
+while [ $l -gt 0 ]
+do
+  RESULT+=("${TEMP[$l-1]}")
+  unset TEMP[$l-1]
+  TEMP=("${TEMP[@]}")
+  l=${#TEMP[*]}
+done
+
+declare -p RESULT
 # Calculate final result. Read the string till operator appears, 
 # then the last two operand are calculated. These elements are unset and new value is set to array
 i=0
@@ -127,6 +141,7 @@ do
 done
 
 # Print final result
+declare -p RESULT
 echo "Result is ${RESULT[*]}"
 
 exit 0
