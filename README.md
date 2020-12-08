@@ -1,5 +1,3 @@
-# WIP
-
 ## Description
 
 There is a calculator on bash. This is a Proof of Concept.
