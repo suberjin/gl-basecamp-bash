@@ -23,7 +23,7 @@ function del {
     fi
     N1=$(printf %.0f $1e+6)
     N2=$(printf %.0f $2e+3)
-    res=$(expr $N2 % $N1)
+    res=$(expr $N1 / $N2)
     printf %.3f "$res"e-3
 }
 
