@@ -16,4 +16,3 @@ Calculator can work with float as well as with integer.
 ## TODO
 
 - Expand this decription.
-- move main logic to the functions
